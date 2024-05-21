@@ -3,27 +3,26 @@ import './App.css';
 import Arweave from "arweave";
 function App() {
   const handleClick = async () => {
-    // window.open(PADOEXTENSIONDOWNLOADURL);
     const arweave = Arweave.init({
-      // host: "arweave.net",
-      // port: 443,
-      // protocol: "https",
-      host: "127.0.0.1",
-      port: 1984,
-      protocol: "http",
+      host: "arweave.net",
+      port: 443,
+      protocol: "https",
+      // host: "127.0.0.1",
+      // port: 1984,
+      // protocol: "http",
     });
 
     const res = await window.arweaveWallet.connect(
       // request permissions to read the active address
       [
         "ACCESS_ADDRESS",
-        "ACCESS_PUBLIC_KEY",
-        "ACCESS_ALL_ADDRESSES",
-        "ENCRYPT",
-        "DECRYPT",
-        "SIGNATURE",
-        "DISPATCH",
-        "ACCESS_ARWEAVE_CONFIG",
+        // "ACCESS_PUBLIC_KEY",
+        // "ACCESS_ALL_ADDRESSES",
+        // "ENCRYPT",
+        // "DECRYPT",
+        // "SIGNATURE",
+        // "DISPATCH",
+        // "ACCESS_ARWEAVE_CONFIG",
         "SIGN_TRANSACTION",
       ]
     );
@@ -56,19 +55,20 @@ function App() {
       data: '<html><head><meta charset="UTF-8"><title>Hello permanent world! This was signed via ArConnect!!!</title></head><body></body></html>',
     });
     debugger;
-    // // sign using arweave-js
+    // // // sign using arweave-js
     const signedFields = await arweave.transactions.sign(
       transaction
     );
     debugger;
-    // let uploader = await arweave.transactions.getUploader(transaction);
-    // while (!uploader.isComplete) {
-    //   await uploader.uploadChunk();
-    //   debugger;
-    //   console.log(
-    //     `${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
-    //   );
-    // }
+    let uploader = await arweave.transactions.getUploader(transaction);
+    debugger
+    while (!uploader.isComplete) {
+      await uploader.uploadChunk();
+      debugger;
+      console.log(
+        `${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
+      );
+    }
     // update transaction fields with the
     // signed transaction's fields
     // transaction.setSignature({
